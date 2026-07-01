@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dse555g57412j"]
+
+[ext_resource type="Script" uid="uid://mwma6mb1a77x" path="res://Scripts/como_jogar.gd" id="1_kf7ml"]
+
+[node name="ComoJogar" type="Node2D" unique_id=2047041154]
+script = ExtResource("1_kf7ml")

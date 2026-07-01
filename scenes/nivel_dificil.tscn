@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bfnsch4dvyhop"]
+
+[ext_resource type="Script" uid="uid://bb0f2m6v6f657" path="res://Scripts/nivel_dificil.gd" id="1_htecu"]
+
+[node name="NivelDificil" type="Node2D" unique_id=1827874100]
+script = ExtResource("1_htecu")
