@@ -123,7 +123,7 @@ func criar_conteudo():
 	imagem = TextureRect.new()
 
 	imagem.texture = load(
-		"res://Sprites/img_tela_inicial.jpg"
+		"res://Sprites/img_tela_inicial.png"
 	)
 
 	imagem.position = Vector2(
@@ -132,8 +132,8 @@ func criar_conteudo():
 	)
 
 	imagem.scale = Vector2(
-		0.48,
-		0.45
+		0.43,
+		0.36
 	)
 
 	add_child(imagem)
