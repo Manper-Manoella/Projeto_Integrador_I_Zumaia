@@ -52,5 +52,5 @@ func obter_pontuacao():
 		"img2":"res://Sprites/Venceu/img_venceu_2estrelas_fase3.png",
 		"img1":"res://Sprites/Venceu/img_venceu_1estrelas_fase3.png",
 
-		"proxima":"res://Scenes/nivel_facil.tscn"
+		"proxima":"res://scenes/nivel_lava.tscn"
 	}

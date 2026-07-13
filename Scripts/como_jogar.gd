@@ -22,12 +22,12 @@ var blocos = [
 
 	{
 		"titulo":"Pontuação",
-		"texto":"Quanto melhor for o seu algoritmo, maior será sua pontuação!\n\nVocê pode ganhar:\n\n⭐ 1 estrela\n⭐⭐ 2 estrelas\n⭐⭐⭐ 3 estrelas\n\nUse menos passos para ganhar mais estrelas!"
+		"texto":"Quanto melhor for o seu algoritmo, maior será sua pontuação!\n\nVocê pode ganhar:\n\n⭐ 1 estrela\n⭐⭐ 2 estrelas\n⭐⭐⭐ 3 estrelas\n⭐⭐⭐⭐ 4 estrelas (só na fase Lendária!)\n\nUse menos passos para ganhar mais estrelas!"
 	},
 
 	{
 		"titulo":"Desafio",
-		"texto":"Cada fase fica mais difícil:\n\n🟢 Fácil\n🟡 Médio\n🔴 Difícil\n\nBoa sorte e divirta-se aprendendo!"
+		"texto":"Cada fase fica mais difícil:\n\n🌲 Fácil\n🌵 Médio\n🌊 Difícil\n🌋 Lendária\n\nBoa sorte e divirta-se aprendendo!"
 	}
 ]
 
