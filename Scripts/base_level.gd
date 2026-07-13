@@ -38,7 +38,6 @@ const ALGORITHM_BACKGROUND = Color("eef4fb")
 # READY
 # =========================================================
 func _ready():
-	print("CHEGUEI NO READY")
 	criar_layout()
 	camada_popup = CanvasLayer.new()
 	camada_popup.layer = 1
@@ -53,19 +52,41 @@ func _ready():
 	grid.fase_concluida.connect(
 		_ao_fase_concluida
 	)
-	
-	robo = Robot.new()
+
+	grid.limite_mapa.connect(
+		_ao_limite_mapa
+	)
+
+	robo = obter_robot_script().new()
 	add_child(robo)
 	robo.definir_grid(grid)
 	configurar_fase()
-	
-	print("VIEWPORT = ", get_viewport().get_visible_rect().size)
+
 # =========================================================
 # CONFIGURAR FASE
 # =========================================================
 func configurar_fase():
 	pass
-	
+
+# =========================================================
+# SCRIPT DO ROBÔ (sobrescrevível por fase)
+# =========================================================
+func obter_robot_script():
+	return Robot
+
+# =========================================================
+# NAVEGAÇÃO VIA TECLADO
+# =========================================================
+func _unhandled_input(event):
+	if event.is_action_pressed("ui_up"):
+		_ao_clicar_avancar()
+	elif event.is_action_pressed("ui_down"):
+		_ao_clicar_voltar()
+	elif event.is_action_pressed("ui_left"):
+		_ao_clicar_esquerda()
+	elif event.is_action_pressed("ui_right"):
+		_ao_clicar_direita()
+
 # =========================================================
 # LAYOUT COMPLETO
 # =========================================================
@@ -101,7 +122,7 @@ func criar_menu_superior_niveis():
 		Color("5f7e21"),
 		func():
 		get_tree().change_scene_to_file(
-			"res://Scenes/nivel_facil.tscn"
+			"res://scenes/nivel_facil.tscn"
 		)
 	)
 	menu_bar.add_child(btn_facil)
@@ -112,7 +133,7 @@ func criar_menu_superior_niveis():
 		Color("c48138"),
 		func():
 		get_tree().change_scene_to_file(
-			"res://Scenes/nivel_medio.tscn"
+			"res://scenes/nivel_medio.tscn"
 		)
 	)
 	menu_bar.add_child(btn_medio)
@@ -123,10 +144,21 @@ func criar_menu_superior_niveis():
 		Color("117686"),
 		func():
 		get_tree().change_scene_to_file(
-			"res://Scenes/nivel_dificil.tscn"
+			"res://scenes/nivel_dificil.tscn"
 		)
 	)
 	menu_bar.add_child(btn_dificil)
+	var btn_lendaria = criar_botao_nivel(
+		"Lendária",
+		Vector2(730, 20),
+		Color("d84315"),
+		Color("a3330f"),
+		func():
+		get_tree().change_scene_to_file(
+			"res://scenes/nivel_lava.tscn"
+		)
+	)
+	menu_bar.add_child(btn_lendaria)
 	var btn_sair = criar_botao_nivel(
 		"Sair",
 		Vector2(1120, 20),
@@ -467,25 +499,21 @@ func _ao_clicar_avancar():
 		Vector2i(0, -1)
 	)
 	atualizar_area_algoritmo()
-	print(algoritmo)
 func _ao_clicar_voltar():
 	algoritmo.append(
 		Vector2i(0, 1)
 	)
 	atualizar_area_algoritmo()
-	print(algoritmo)
 func _ao_clicar_esquerda():
 	algoritmo.append(
 		Vector2i(-1, 0)
 	)
 	atualizar_area_algoritmo()
-	print(algoritmo)
 func _ao_clicar_direita():
 	algoritmo.append(
 		Vector2i(1, 0)
 	)
 	atualizar_area_algoritmo()
-	print(algoritmo)
 #======================================
 # EXECUTAR ALGORITMO
 #======================================
@@ -629,12 +657,7 @@ func mostrar_popup(caminho_imagem):
 	popup_fundo.add_child(
 		popup_imagem
 	)
-	
-	print("Escala do popup: ", popup_imagem.scale)
-	print("Escala global do popup: ", popup_imagem.global_scale)
-	print("Tamanho textura: ", popup_imagem.texture.get_size())
-	
-	
+
 	var btn_desistir = criar_botao_comando(
 		"",
 		Vector2(350, 560),
@@ -677,6 +700,63 @@ func _fechar_popup():
 	if popup_fundo != null:
 		popup_fundo.queue_free()
 		popup_fundo = null
+#==========================================
+# Popup de texto (sem imagem ilustrativa)
+#==========================================
+func mostrar_popup_texto(mensagem):
+	if popup_fundo != null:
+		popup_fundo.queue_free()
+	popup_fundo = ColorRect.new()
+	popup_fundo.color = Color(0, 0, 0, 0.65)
+	popup_fundo.position = Vector2.ZERO
+	popup_fundo.size = Vector2(1280, 720)
+	camada_popup.add_child(popup_fundo)
+
+	var caixa = Panel.new()
+	caixa.size = Vector2(560, 320)
+	caixa.position = Vector2(360, 180)
+
+	var estilo_caixa = StyleBoxFlat.new()
+	estilo_caixa.bg_color = Color("d6e9f5")
+	estilo_caixa.border_color = Color("2f6fa3")
+	estilo_caixa.set_border_width_all(4)
+	estilo_caixa.corner_radius_top_left = 24
+	estilo_caixa.corner_radius_top_right = 24
+	estilo_caixa.corner_radius_bottom_left = 24
+	estilo_caixa.corner_radius_bottom_right = 24
+	caixa.add_theme_stylebox_override("panel", estilo_caixa)
+
+	popup_fundo.add_child(caixa)
+
+	var titulo = Label.new()
+	titulo.text = "ATENÇÃO"
+	titulo.position = Vector2(0, 30)
+	titulo.size = Vector2(560, 40)
+	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	titulo.add_theme_font_size_override("font_size", 26)
+	titulo.add_theme_color_override("font_color", Color("c0392b"))
+	caixa.add_child(titulo)
+
+	var texto = Label.new()
+	texto.text = mensagem
+	texto.position = Vector2(40, 100)
+	texto.size = Vector2(480, 110)
+	texto.autowrap_mode = TextServer.AUTOWRAP_WORD
+	texto.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	texto.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	texto.add_theme_font_size_override("font_size", 22)
+	texto.add_theme_color_override("font_color", Color("1c3d5a"))
+	caixa.add_child(texto)
+
+	var btn_ok = criar_botao_comando(
+		"Entendi",
+		Vector2(130, 245),
+		Vector2(300, 55)
+	)
+	btn_ok.pressed.connect(_fechar_popup)
+	caixa.add_child(btn_ok)
+func _ao_limite_mapa():
+	mostrar_popup_texto("Você tentou entrar numa área proibida")
 func _ao_erro_algoritmo(tipo_bloco):
 	if tipo_bloco == GridManager.TipoBloco.AGUA:
 		mostrar_popup(
@@ -693,6 +773,10 @@ func _ao_erro_algoritmo(tipo_bloco):
 	elif tipo_bloco == GridManager.TipoBloco.ESPINHO:
 		mostrar_popup(
 			"res://Sprites/Perdeu/img_popup_cacto.png"
+		)
+	elif tipo_bloco == GridManager.TipoBloco.LAVA:
+		mostrar_popup(
+			"res://Sprites/Perdeu/img_popup_lava.png"
 		)
 func _ao_fase_concluida():
 	mostrar_popup_vitoria()
@@ -720,7 +804,9 @@ func mostrar_popup_vitoria():
 	var passos = algoritmo.size()
 	var imagem = ""
 
-	if passos <= dados.tres:
+	if dados.has("quatro") and passos <= dados.quatro:
+		imagem = dados.img4
+	elif passos <= dados.tres:
 		imagem = dados.img3
 	elif passos <= dados.duas:
 		imagem = dados.img2

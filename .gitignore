@@ -1,4 +1,11 @@
-ÿþ.godot/
+.godot/
 .import/
 export_presets.cfg
 *.tmp
+
+CHECKLIST_*.md
+TASK_*.md
+
+# Copia de rascunho, nao e a versao em uso.
+jogar_atual_copia.gd
+jogar_atual_copia.gd.uid
