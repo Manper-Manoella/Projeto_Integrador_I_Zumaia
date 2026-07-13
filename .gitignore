@@ -3,9 +3,6 @@
 export_presets.cfg
 *.tmp
 
-# Configuracao local do Claude Code, nao faz parte do jogo.
-.claude/
-
 # Documentacao de apoio usada para resolver bugs/tarefas neste repositorio,
 # nao faz parte do jogo em si.
 CHECKLIST_CODIGO.md
