@@ -1,0 +1,11 @@
+var mapa = [
+    [L, L, L, V, L, V, L, L, L, L, L, O],   // linha 0 (topo)
+    [O, O, L, V, L, L, L, O, L, V, L, O],   // linha 1
+    [L, O, L, V, L, O, O, O, L, L, L, O],   // linha 2
+    [O, L, L, O, L, L, L, V, V, L, V, O],   // linha 3
+    [L, L, V, V, V, V, L, V, L, L, L, O],   // linha 4
+    [L, L, O, L, L, L, L, V, L, V, V, O],   // linha 5
+    [O, L, L, L, O, V, O, V, L, L, C, O],   // linha 6
+    [O, O, O, O, O, O, O, O, O, O, O, O]    // linha 7
+]
+
