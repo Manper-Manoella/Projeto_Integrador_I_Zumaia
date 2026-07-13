@@ -3,11 +3,8 @@
 export_presets.cfg
 *.tmp
 
-# Documentacao de apoio usada para resolver bugs/tarefas neste repositorio,
-# nao faz parte do jogo em si.
-CHECKLIST_CODIGO.md
-TASK_alinhamento_robo.md
-TASK_claude_code_atualizado.md
+CHECKLIST_*.md
+TASK_*.md
 
 # Copia de rascunho, nao e a versao em uso.
 jogar_atual_copia.gd
