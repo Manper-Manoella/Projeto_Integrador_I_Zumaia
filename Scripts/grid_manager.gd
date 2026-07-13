@@ -8,6 +8,8 @@ signal erro_algoritmo(tipo_bloco)
 
 signal fase_concluida
 
+signal limite_mapa
+
 # =========================================================
 # CONFIGURAÇÕES DO GRID
 # =========================================================
@@ -25,6 +27,7 @@ enum TipoBloco {
 	OBSTACULO,
 	MOVEDICA,
 	ESPINHO,
+	LAVA,
 	CHEGADA
 }
 
@@ -121,9 +124,11 @@ func mover_robo(dir):
 	var nova_pos = robo_pos + dir
 
 	if nova_pos.x < 0 or nova_pos.x >= GRID_WIDTH:
+		limite_mapa.emit()
 		return false
 
 	if nova_pos.y < 0 or nova_pos.y >= GRID_HEIGHT:
+		limite_mapa.emit()
 		return false
 
 	var tipo = mapa[
@@ -146,6 +151,16 @@ func mover_robo(dir):
 
 		erro_algoritmo.emit(
 			TipoBloco.AGUA
+		)
+
+		return false
+
+	if tipo == TipoBloco.LAVA:
+
+		robo_pos = nova_pos
+
+		erro_algoritmo.emit(
+			TipoBloco.LAVA
 		)
 
 		return false
